@@ -16,6 +16,7 @@ public class Notes extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_notes);
