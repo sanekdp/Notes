@@ -1,7 +1,10 @@
 package com.example.java.notes;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,7 +38,9 @@ public class Notes extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(recyclerView, "click FloatActionBar", Snackbar.LENGTH_SHORT).show();
+                Snackbar snackBar = Snackbar.make(recyclerView, "click FloatActionBar", Snackbar.LENGTH_SHORT);
+                snackBar.getView().setBackgroundColor(Color.RED);
+                snackBar.show();
             }
         });
         recyclerView = (RecyclerView) findViewById(R.id.recycler_notes);
