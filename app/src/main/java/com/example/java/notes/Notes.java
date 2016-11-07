@@ -56,7 +56,11 @@ public class Notes extends AppCompatActivity {
         NotesAdapter adapter = new NotesAdapter();
         List<Note> dataSource = new ArrayList<Note>();
         for (int i = 0; i < 100;i++){
-            dataSource.add(new Note());
+            Note note = new Note();
+            note.setTime(System.currentTimeMillis());
+            note.setText("title : " + i);
+            note.setTitle("Title: " + i);
+            dataSource.add(note);
         }
         recyclerView.setAdapter(adapter);
         adapter.setDataSource(dataSource);

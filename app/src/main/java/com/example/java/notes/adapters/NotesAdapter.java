@@ -57,7 +57,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     static class NotesViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.title_text_view)
-        protected TextView titleTextView = null;
+        protected TextView mPrimaryTextView = null;
+        @BindView(R.id.secondary_text_view)
+        protected TextView mSecondaryTextView = null;
+        @BindView(R.id.date_text_view)
+        protected TextView mDateTextView = null;
         @BindView(R.id.card_view)
         protected CardView cardView = null;
 
@@ -68,7 +72,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         }
 
         void bindView(final Note note) {
-            titleTextView.setText(note.getTitle());
+            mPrimaryTextView.setText(note.getTitle());
+            mSecondaryTextView.setText(note.getText());
+            mDateTextView.setText(String.valueOf(note.getTime()));
             //CardView cardView = (CardView) itemView.findViewById(R.id.card_view);
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override

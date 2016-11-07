@@ -14,14 +14,14 @@
         android:id="@+id/title_text_view"/>
 
     <TextView
-        style="@style/SecondaryTextView"
-
         android:layout_gravity="bottom"
+        style="@style/SecondaryTextView"
         android:id="@+id/secondary_text_view" />
 
     <TextView
-        style="@style/SecondaryTextView"
+        android:id="@+id/date_text_view"
         android:layout_gravity="right"
+        style="@style/SecondaryTextView"
         />
 
 </android.support.v7.widget.CardView>
