@@ -4,6 +4,9 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="view_notes_item_padding">15dp</dimen>
     <dimen name="view_notes_item_corner_radius">5dp</dimen>
-    <dimen name="view_notes_item_title_text_size">18sp</dimen>
+    <dimen name="view_notes_item_primary_text_size">16sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="card_view_content_padding">5dp</dimen>
+    <dimen name="view_notes_item_heght">72dp</dimen>
+    <dimen name="view_notes_item_secondary_text_size">13sp</dimen>
 </resources>

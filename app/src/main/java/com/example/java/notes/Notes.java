@@ -16,14 +16,20 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.java.notes.adapters.NotesAdapter;
+import com.example.java.notes.model.Note;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class Notes extends AppCompatActivity {
 
-    private RecyclerView recyclerView = null;
-    private Toolbar toolbar = null;
+    @BindView(R.id.recycler_notes)
+    protected RecyclerView recyclerView = null;
+    @BindView(R.id.toolbar)
+    protected Toolbar toolbar = null;
     private FloatingActionButton fab = null;
 
     @Override
@@ -31,7 +37,8 @@ public class Notes extends AppCompatActivity {
         //test Push
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+        //toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle(R.string.app_name);
         fab = (FloatingActionButton) findViewById(R.id.floating_btn);
@@ -43,13 +50,13 @@ public class Notes extends AppCompatActivity {
                 snackBar.show();
             }
         });
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_notes);
+        //recyclerView = (RecyclerView) findViewById(R.id.recycler_notes);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
                 recyclerView.setLayoutManager(layoutManager);
         NotesAdapter adapter = new NotesAdapter();
-        List<String> dataSource = new ArrayList<String>();
+        List<Note> dataSource = new ArrayList<Note>();
         for (int i = 0; i < 100;i++){
-            dataSource.add("title: " + i);
+            dataSource.add(new Note());
         }
         recyclerView.setAdapter(adapter);
         adapter.setDataSource(dataSource);

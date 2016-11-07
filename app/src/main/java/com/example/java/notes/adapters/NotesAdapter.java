@@ -9,9 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.java.notes.Notes;
 import com.example.java.notes.R;
+import com.example.java.notes.model.Note;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by java on 31.10.2016.
@@ -19,10 +24,10 @@ import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
-    private List<String> dataSource = null;
+    private List<Note> mDataSource = null;
 
-    public void setDataSource(List<String> dataSource) {
-        this.dataSource = dataSource;
+    public void setDataSource(List<Note> dataSource) {
+        this.mDataSource = dataSource;
         notifyDataSetChanged();
     }
 
@@ -38,33 +43,37 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     @Override
     public void onBindViewHolder(NotesViewHolder holder, int position) {
 
-        String title = dataSource.get(position);
-        holder.bindView(title);
+        Note note = mDataSource.get(position);
+        holder.bindView(note);
     }
 
     @Override
     public int getItemCount() {
-        if (dataSource == null)
+        if (mDataSource == null)
             return 0;
-        return dataSource.size();
+        return mDataSource.size();
     }
 
     static class NotesViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView titleTextView = null;
+        @BindView(R.id.title_text_view)
+        protected TextView titleTextView = null;
+        @BindView(R.id.card_view)
+        protected CardView cardView = null;
 
         public NotesViewHolder(final View itemView) {
             super(itemView);
-            titleTextView = (TextView) itemView.findViewById(R.id.title_text_view);
+            ButterKnife.bind(this, itemView);
+            //titleTextView = (TextView) itemView.findViewById(R.id.title_text_view);
         }
 
-        void bindView(final String title) {
-            titleTextView.setText(title);
-            CardView cardView = (CardView) itemView.findViewById(R.id.card_view);
+        void bindView(final Note note) {
+            titleTextView.setText(note.getTitle());
+            //CardView cardView = (CardView) itemView.findViewById(R.id.card_view);
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar snackBar = Snackbar.make(view, title, Snackbar.LENGTH_SHORT);
+                    Snackbar snackBar = Snackbar.make(view, note.getTitle(), Snackbar.LENGTH_SHORT);
                     snackBar.getView().setBackgroundColor(Color.GRAY);
                     snackBar.show();
                 }
