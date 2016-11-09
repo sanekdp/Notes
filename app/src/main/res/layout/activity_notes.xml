@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".Notes">
+    tools:context=".activity.Notes">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -35,11 +35,12 @@
         android:id="@+id/floating_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_gesture_black_24dp"
         android:clickable="true"
         android:layout_gravity="bottom|right"
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@drawable/airplane"
     />
+
 
 </android.support.design.widget.CoordinatorLayout>

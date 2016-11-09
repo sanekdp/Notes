@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.java.notes.Notes;
 import com.example.java.notes.R;
 import com.example.java.notes.model.Note;
 

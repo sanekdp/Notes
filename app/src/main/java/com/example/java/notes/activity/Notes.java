@@ -1,6 +1,7 @@
-package com.example.java.notes;
+package com.example.java.notes.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.java.notes.R;
 import com.example.java.notes.adapters.NotesAdapter;
 import com.example.java.notes.model.Note;
 
@@ -30,7 +32,10 @@ public class Notes extends AppCompatActivity {
     protected RecyclerView recyclerView = null;
     @BindView(R.id.toolbar)
     protected Toolbar toolbar = null;
-    private FloatingActionButton fab = null;
+    @BindView(R.id.floating_btn)
+    protected FloatingActionButton mFabButton = null;
+
+    public static final String DATA_KEY = "DATA_KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +46,7 @@ public class Notes extends AppCompatActivity {
         //toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle(R.string.app_name);
-        fab = (FloatingActionButton) findViewById(R.id.floating_btn);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar snackBar = Snackbar.make(recyclerView, "click FloatActionBar", Snackbar.LENGTH_SHORT);
-                snackBar.getView().setBackgroundColor(Color.RED);
-                snackBar.show();
-            }
-        });
+        //fab = (FloatingActionButton) findViewById(R.id.floating_btn);
         //recyclerView = (RecyclerView) findViewById(R.id.recycler_notes);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
                 recyclerView.setLayoutManager(layoutManager);
@@ -64,6 +61,13 @@ public class Notes extends AppCompatActivity {
         }
         recyclerView.setAdapter(adapter);
         adapter.setDataSource(dataSource);
+        mFabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = EditNote.newInstance(Notes.this);
+                startActivity(intent);
+            }
+        });
 
     }
 
