@@ -54,5 +54,9 @@
 
     </style>
 
+    <style name="PrimaryColorAccentStyle">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
 
 </resources>

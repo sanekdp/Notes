@@ -1,11 +1,8 @@
 package com.example.java.notes.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,8 +22,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class Notes extends AppCompatActivity {
+public class NotesActivity extends AppCompatActivity {
 
     @BindView(R.id.recycler_notes)
     protected RecyclerView recyclerView = null;
@@ -34,6 +32,14 @@ public class Notes extends AppCompatActivity {
     protected Toolbar toolbar = null;
     @BindView(R.id.floating_btn)
     protected FloatingActionButton mFabButton = null;
+
+
+    @OnClick(R.id.floating_btn)
+    void onClick(){
+        Intent intent = EditNoteActivity.newInstance(NotesActivity.this);
+        intent.putExtra(EditNoteActivity.EDIT_FIRST_TEXT_KEY, "put Data Key");
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +61,14 @@ public class Notes extends AppCompatActivity {
         }
         recyclerView.setAdapter(adapter);
         adapter.setDataSource(dataSource);
-        mFabButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = EditNote.newInstance(Notes.this);
-                intent.putExtra(EditNote.EDIT_FIRST_TEXT_KEY, "put Data Key");
-                startActivity(intent);
-            }
-        });
+//        mFabButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = EditNoteActivity.newInstance(NotesActivity.this);
+//                intent.putExtra(EditNoteActivity.EDIT_FIRST_TEXT_KEY, "put Data Key");
+//                startActivity(intent);
+//            }
+//        });
 
     }
 

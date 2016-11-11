@@ -45,4 +45,5 @@ dependencies {
     compile "com.jakewharton:butterknife:${butterKnifiVersion}"
     apt "com.jakewharton:butterknife-compiler:${butterKnifiVersion}"
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
 }
