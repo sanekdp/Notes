@@ -1,5 +1,6 @@
 package com.example.java.notes.adapters;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
@@ -7,15 +8,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.java.notes.R;
+import com.example.java.notes.activity.EditNote;
+import com.example.java.notes.activity.Notes;
 import com.example.java.notes.model.Note;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by java on 31.10.2016.
@@ -67,20 +72,19 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         public NotesViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            //titleTextView = (TextView) itemView.findViewById(R.id.title_text_view);
         }
 
         void bindView(final Note note) {
             mPrimaryTextView.setText(note.getTitle());
             mSecondaryTextView.setText(note.getText());
             mDateTextView.setText(String.valueOf(note.getTime()));
-            //CardView cardView = (CardView) itemView.findViewById(R.id.card_view);
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar snackBar = Snackbar.make(view, note.getTitle(), Snackbar.LENGTH_SHORT);
-                    snackBar.getView().setBackgroundColor(Color.GRAY);
-                    snackBar.show();
+                    Intent intent = EditNote.newInstance(cardView.getContext());
+                    intent.putExtra(EditNote.EDIT_FIRST_TEXT_KEY, note.getTitle());
+                    intent.putExtra(EditNote.EDIT_SECOND_TEXT_KEY, note.getText());
+                    cardView.getContext().startActivity(intent);
                 }
             });
 

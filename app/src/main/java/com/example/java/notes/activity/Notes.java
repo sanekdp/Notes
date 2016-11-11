@@ -35,23 +35,17 @@ public class Notes extends AppCompatActivity {
     @BindView(R.id.floating_btn)
     protected FloatingActionButton mFabButton = null;
 
-    public static final String DATA_KEY = "DATA_KEY";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //test Push
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
         ButterKnife.bind(this);
-        //toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle(R.string.app_name);
-        //fab = (FloatingActionButton) findViewById(R.id.floating_btn);
-        //recyclerView = (RecyclerView) findViewById(R.id.recycler_notes);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
                 recyclerView.setLayoutManager(layoutManager);
         NotesAdapter adapter = new NotesAdapter();
-        List<Note> dataSource = new ArrayList<Note>();
+        List<Note> dataSource = new ArrayList<>();
         for (int i = 0; i < 100;i++){
             Note note = new Note();
             note.setTime(System.currentTimeMillis());
@@ -65,6 +59,7 @@ public class Notes extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = EditNote.newInstance(Notes.this);
+                intent.putExtra(EditNote.EDIT_FIRST_TEXT_KEY, "put Data Key");
                 startActivity(intent);
             }
         });

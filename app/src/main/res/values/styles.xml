@@ -29,5 +29,30 @@
         <item name="android:textColor">@android:color/secondary_text_light</item>
     </style>
 
+    <style name="DefaultEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:ellipsize">start</item>
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">text</item>
+        <item name="android:background">@drawable/edit_note_text_style</item>
+    </style>
+
+    <style name="PrimaryEditText" parent="DefaultEditText">
+
+    </style>
+
+    <style name="SecondaryEditText" parent="DefaultEditText">
+
+    </style>
+
+    <style name="TimeEditText" parent="DefaultEditText">
+
+    </style>
+
 
 </resources>
