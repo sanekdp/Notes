@@ -39,7 +39,6 @@
         <item name="android:ellipsize">start</item>
         <item name="android:gravity">center</item>
         <item name="android:inputType">text</item>
-        <item name="android:background">@drawable/edit_note_text_style</item>
     </style>
 
     <style name="PrimaryEditText" parent="DefaultEditText">
@@ -55,7 +54,7 @@
     </style>
 
     <style name="PrimaryColorAccentStyle">
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorFab</item>
     </style>
 
 

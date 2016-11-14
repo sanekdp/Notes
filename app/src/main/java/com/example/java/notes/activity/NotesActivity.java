@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.java.notes.R;
 import com.example.java.notes.adapters.NotesAdapter;
@@ -26,6 +27,7 @@ import butterknife.OnClick;
 
 public class NotesActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CODE = 101;
     @BindView(R.id.recycler_notes)
     protected RecyclerView recyclerView = null;
     @BindView(R.id.toolbar)
@@ -36,9 +38,25 @@ public class NotesActivity extends AppCompatActivity {
 
     @OnClick(R.id.floating_btn)
     void onClick(){
-        Intent intent = EditNoteActivity.newInstance(NotesActivity.this);
-        intent.putExtra(EditNoteActivity.EDIT_FIRST_TEXT_KEY, "put Data Key");
-        startActivity(intent);
+//        Intent intent = EditNoteActivity.newInstance(NotesActivity.this);
+//        intent.putExtra(EditNoteActivity.EDIT_FIRST_TEXT_KEY, "put Data Key");
+//        startActivity(intent);
+
+        startActivityForResult(EditNoteActivity.newInstance(this), REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK){
+
+            if (requestCode == REQUEST_CODE){
+                String result = data.getStringExtra(EditNoteActivity.RESULT);
+                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 
     @Override

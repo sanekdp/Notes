@@ -69,7 +69,10 @@
 
     <EditText
         android:id="@+id/second_edit_text"
-        style="@style/SecondaryEditText"/>
+        android:inputType="textMultiLine"
+        style="@style/SecondaryEditText"
+        android:layout_height="166dp"
+        android:layout_width="341dp" />
 
     </android.support.design.widget.TextInputLayout>
 
