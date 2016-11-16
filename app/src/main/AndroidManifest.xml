@@ -17,6 +17,10 @@
         </activity>
         <activity android:name=".activity.EditNoteActivity">
         </activity>
+        <provider
+            android:authorities="com.example.java.notes"
+            android:name=".providers.NotesContentProvider"
+            android:exported="false" />
     </application>
 
 </manifest>

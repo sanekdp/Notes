@@ -1,8 +1,12 @@
 package com.example.java.notes.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.java.notes.R;
 import com.example.java.notes.adapters.NotesAdapter;
+import com.example.java.notes.db.NotesContract;
 import com.example.java.notes.model.Note;
 
 import java.util.ArrayList;
@@ -25,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class NotesActivity extends AppCompatActivity {
+public class NotesActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int REQUEST_CODE = 101;
     @BindView(R.id.recycler_notes)
@@ -37,7 +42,7 @@ public class NotesActivity extends AppCompatActivity {
 
 
     @OnClick(R.id.floating_btn)
-    void onClick(){
+    void onClick() {
 //        Intent intent = EditNoteActivity.newInstance(NotesActivity.this);
 //        intent.putExtra(EditNoteActivity.EDIT_FIRST_TEXT_KEY, "put Data Key");
 //        startActivity(intent);
@@ -49,9 +54,9 @@ public class NotesActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
 
-            if (requestCode == REQUEST_CODE){
+            if (requestCode == REQUEST_CODE) {
                 String result = data.getStringExtra(EditNoteActivity.RESULT);
                 Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
             }
@@ -66,19 +71,23 @@ public class NotesActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         setTitle(R.string.app_name);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-                recyclerView.setLayoutManager(layoutManager);
-        NotesAdapter adapter = new NotesAdapter();
-        List<Note> dataSource = new ArrayList<>();
-        for (int i = 0; i < 100;i++){
-            Note note = new Note();
-            note.setTime(System.currentTimeMillis());
-            note.setText("title : " + i);
-            note.setTitle("Title: " + i);
-            dataSource.add(note);
-        }
-        recyclerView.setAdapter(adapter);
-        adapter.setDataSource(dataSource);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
+                this,
+                RecyclerView.VERTICAL,
+                false);
+        recyclerView.setLayoutManager(layoutManager);
+        getSupportLoaderManager().initLoader(R.id.notes_loader, null, this);
+//        NotesAdapter adapter = new NotesAdapter();
+//        List<Note> dataSource = new ArrayList<>();
+//        for (int i = 0; i < 100; i++) {
+//            Note note = new Note();
+//            note.setTime(String.valueOf(System.currentTimeMillis()));
+//            note.setText("title : " + i);
+//            note.setTitle("Title: " + i);
+//            dataSource.add(note);
+//        }
+//        recyclerView.setAdapter(adapter);
+//        adapter.setDataSource(dataSource);
 //        mFabButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -114,5 +123,32 @@ public class NotesActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(
+                this,
+                NotesContract.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        List<Note> dataSource = new ArrayList<>();
+        while (data.moveToNext()) {
+            dataSource.add(new Note(data));
+        }
+        NotesAdapter adapter = new NotesAdapter();
+        recyclerView.setAdapter(adapter);
+        adapter.setDataSource(dataSource);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

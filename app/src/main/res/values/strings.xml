@@ -4,4 +4,7 @@
     <string name="edit_name">Edit Note</string>
     <string name="help">Help</string>
     <string name="sharing_template" formatted="false">Title: %s\nText: %s</string>
+    <string name="save">Save</string>
+    <string name="text_hint">Text...</string>
+    <string name="title_hint">Title...</string>
 </resources>

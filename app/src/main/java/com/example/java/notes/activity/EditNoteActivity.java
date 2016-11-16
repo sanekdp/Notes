@@ -1,5 +1,6 @@
 package com.example.java.notes.activity;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,18 +11,21 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.example.java.notes.R;
+import com.example.java.notes.db.NotesContract;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class EditNoteActivity extends AppCompatActivity {
 
     private static final String SHARE_TYPE = "text/plain";
     public static final String RESULT =  "RESULT";
-    @BindView(R.id.first_edit_text)
-    protected EditText mFirstEditText = null;
-    @BindView(R.id.second_edit_text)
-    protected EditText mSecondEditText = null;
+
+    @BindView(R.id.titleEditText)
+    protected EditText mFirstEditText;
+    @BindView(R.id.contentEditText)
+    protected EditText mSecondEditText;
     @BindView(R.id.toolbar)
     protected Toolbar mToolbar = null;
 
@@ -90,5 +94,19 @@ public class EditNoteActivity extends AppCompatActivity {
 
     private String prepareNoteForSharing() {
         return getString(R.string.sharing_template, mFirstEditText.getText(), mSecondEditText.getText());
+    }
+
+    @OnClick(R.id.saveBtn)
+    public void onSaveBtnClick() {
+        insertNote();
+        finish();
+    }
+
+    private void insertNote() {
+        ContentValues values = new ContentValues();
+        values.put(NotesContract.TITLE_COLUMN, mFirstEditText.getText().toString());
+        values.put(NotesContract.TEXT_COLUMN, mSecondEditText.getText().toString());
+        values.put(NotesContract.TIME_COLUMN, String.valueOf(System.currentTimeMillis()));
+        getContentResolver().insert(NotesContract.CONTENT_URI, values);
     }
 }
