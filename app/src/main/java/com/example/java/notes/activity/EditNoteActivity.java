@@ -21,6 +21,7 @@ public class EditNoteActivity extends AppCompatActivity {
 
     private static final String SHARE_TYPE = "text/plain";
     public static final String RESULT =  "RESULT";
+    private static String TIME_NOTE;
 
     @BindView(R.id.titleEditText)
     protected EditText mFirstEditText;
@@ -31,6 +32,7 @@ public class EditNoteActivity extends AppCompatActivity {
 
     public static final String EDIT_FIRST_TEXT_KEY = "EDIT_FIRST_TEXT_KEY";
     public static final String EDIT_SECOND_TEXT_KEY = "EDIT_SECOND_TEXT_KEY";
+    public static final String EDIT_TIME_KEY = "EDIT_TIME_KEY";
 
     public static Intent newInstance(Context context) {
         return new Intent(context, EditNoteActivity.class);
@@ -43,14 +45,14 @@ public class EditNoteActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-
-        setTitle("Edit Note");
-//        String extraTitle = getIntent().getStringExtra(EDIT_FIRST_TEXT_KEY);
-//        String extraText = getIntent().getStringExtra(EDIT_SECOND_TEXT_KEY);
-//        mFirstEditText.setText(extraTitle);
-//        mSecondEditText.setText(extraText);
+        setTitle("Note");
+        TIME_NOTE = getIntent().getStringExtra(EDIT_TIME_KEY);
+        if (TIME_NOTE != null) {
+            String extraTitle = getIntent().getStringExtra(EDIT_FIRST_TEXT_KEY);
+            String extraText = getIntent().getStringExtra(EDIT_SECOND_TEXT_KEY);
+            mFirstEditText.setText(extraTitle);
+            mSecondEditText.setText(extraText);
+        }
     }
 
     @Override
@@ -61,17 +63,23 @@ public class EditNoteActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, NotesActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-
                 break;
             }
             case R.id.action_share: {
                 //share();
-
                 Intent intent = new Intent();
-                intent.putExtra(RESULT, prepareNoteForSharing());
+                intent.putExtra(RESULT, "Отправлено");
                 setResult(RESULT_OK, intent);
                 finish();
-
+                break;
+            }
+            case R.id.action_delete:{
+                if (TIME_NOTE != null)
+                    deleteNote();
+                Intent intent = new Intent();
+                intent.putExtra(RESULT, "Удалено");
+                setResult(RESULT_OK, intent);
+                finish();
                 break;
             }
         }
@@ -89,6 +97,8 @@ public class EditNoteActivity extends AppCompatActivity {
     @Override
     public boolean onCreatePanelMenu(int featureId, Menu menu) {
         getMenuInflater().inflate(R.menu.note_menu, menu);
+        if (TIME_NOTE == null)
+            menu.findItem(R.id.action_delete).setVisible(false);
         return super.onCreatePanelMenu(featureId, menu);
     }
 
@@ -98,7 +108,10 @@ public class EditNoteActivity extends AppCompatActivity {
 
     @OnClick(R.id.saveBtn)
     public void onSaveBtnClick() {
-        insertNote();
+        if (TIME_NOTE == null)
+            insertNote();
+        else
+            updateNote();
         finish();
     }
 
@@ -108,5 +121,22 @@ public class EditNoteActivity extends AppCompatActivity {
         values.put(NotesContract.TEXT_COLUMN, mSecondEditText.getText().toString());
         values.put(NotesContract.TIME_COLUMN, String.valueOf(System.currentTimeMillis()));
         getContentResolver().insert(NotesContract.CONTENT_URI, values);
+    }
+
+    private void updateNote() {
+        ContentValues values = new ContentValues();
+        values.put(NotesContract.TITLE_COLUMN, mFirstEditText.getText().toString());
+        values.put(NotesContract.TEXT_COLUMN, mSecondEditText.getText().toString());
+        values.put(NotesContract.TIME_COLUMN, TIME_NOTE);
+        String clause = "TIME = ?";
+        String[] args = { TIME_NOTE };
+        getContentResolver().update(NotesContract.CONTENT_URI,values, clause, args);
+    }
+
+    private void deleteNote() {
+        ContentValues values = new ContentValues();
+        String clause = "TIME = ?";
+        String[] args = { TIME_NOTE };
+        getContentResolver().delete(NotesContract.CONTENT_URI, clause, args);
     }
 }

@@ -43,10 +43,6 @@ public class NotesActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @OnClick(R.id.floating_btn)
     void onClick() {
-//        Intent intent = EditNoteActivity.newInstance(NotesActivity.this);
-//        intent.putExtra(EditNoteActivity.EDIT_FIRST_TEXT_KEY, "put Data Key");
-//        startActivity(intent);
-
         startActivityForResult(EditNoteActivity.newInstance(this), REQUEST_CODE);
     }
 
@@ -60,7 +56,6 @@ public class NotesActivity extends AppCompatActivity implements LoaderManager.Lo
                 String result = data.getStringExtra(EditNoteActivity.RESULT);
                 Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
             }
-
         }
     }
 
@@ -77,26 +72,6 @@ public class NotesActivity extends AppCompatActivity implements LoaderManager.Lo
                 false);
         recyclerView.setLayoutManager(layoutManager);
         getSupportLoaderManager().initLoader(R.id.notes_loader, null, this);
-//        NotesAdapter adapter = new NotesAdapter();
-//        List<Note> dataSource = new ArrayList<>();
-//        for (int i = 0; i < 100; i++) {
-//            Note note = new Note();
-//            note.setTime(String.valueOf(System.currentTimeMillis()));
-//            note.setText("title : " + i);
-//            note.setTitle("Title: " + i);
-//            dataSource.add(note);
-//        }
-//        recyclerView.setAdapter(adapter);
-//        adapter.setDataSource(dataSource);
-//        mFabButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = EditNoteActivity.newInstance(NotesActivity.this);
-//                intent.putExtra(EditNoteActivity.EDIT_FIRST_TEXT_KEY, "put Data Key");
-//                startActivity(intent);
-//            }
-//        });
-
     }
 
     @Override

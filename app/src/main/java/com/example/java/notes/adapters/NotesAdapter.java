@@ -1,6 +1,8 @@
 package com.example.java.notes.adapters;
 
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,14 +14,12 @@ import com.example.java.notes.R;
 import com.example.java.notes.activity.EditNoteActivity;
 import com.example.java.notes.model.Note;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-/**
- * Created by java on 31.10.2016.
- */
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
@@ -72,13 +72,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         void bindView(final Note note) {
             mPrimaryTextView.setText(note.getTitle());
             mSecondaryTextView.setText(note.getText());
-            mDateTextView.setText(String.valueOf(note.getTime()));
+            SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
+            String date = formater.format(new Date(Long.parseLong(note.getTime())));
+            mDateTextView.setText(date);
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = EditNoteActivity.newInstance(cardView.getContext());
                     intent.putExtra(EditNoteActivity.EDIT_FIRST_TEXT_KEY, note.getTitle());
                     intent.putExtra(EditNoteActivity.EDIT_SECOND_TEXT_KEY, note.getText());
+                    intent.putExtra(EditNoteActivity.EDIT_TIME_KEY, note.getTime());
                     cardView.getContext().startActivity(intent);
                 }
             });
