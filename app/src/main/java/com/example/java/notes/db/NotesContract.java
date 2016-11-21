@@ -3,6 +3,7 @@ package com.example.java.notes.db;
 import android.net.Uri;
 
 import com.example.java.notes.BuildConfig;
+import com.tjeannin.provigen.ProviGenBaseContract;
 import com.tjeannin.provigen.annotation.Column;
 import com.tjeannin.provigen.annotation.ContentUri;
 
@@ -10,7 +11,7 @@ import com.tjeannin.provigen.annotation.ContentUri;
  * Created by java on 16.11.2016.
  */
 
-public interface NotesContract {
+public interface NotesContract extends ProviGenBaseContract {
 
     @Column(Column.Type.TEXT)
     public static final String TITLE_COLUMN = "TITLE";

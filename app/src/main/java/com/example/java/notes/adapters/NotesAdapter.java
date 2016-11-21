@@ -1,8 +1,6 @@
 package com.example.java.notes.adapters;
 
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,9 +11,8 @@ import android.widget.TextView;
 import com.example.java.notes.R;
 import com.example.java.notes.activity.EditNoteActivity;
 import com.example.java.notes.model.Note;
+import com.tjeannin.provigen.ProviGenBaseContract;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -55,6 +52,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     static class NotesViewHolder extends RecyclerView.ViewHolder {
 
+        private Note mNote = null;
+
         @BindView(R.id.title_text_view)
         protected TextView mPrimaryTextView = null;
         @BindView(R.id.secondary_text_view)
@@ -72,16 +71,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         void bindView(final Note note) {
             mPrimaryTextView.setText(note.getTitle());
             mSecondaryTextView.setText(note.getText());
-            SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
-            String date = formater.format(new Date(Long.parseLong(note.getTime())));
-            mDateTextView.setText(date);
+            mDateTextView.setText(note.getTime());
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = EditNoteActivity.newInstance(cardView.getContext());
-                    intent.putExtra(EditNoteActivity.EDIT_FIRST_TEXT_KEY, note.getTitle());
-                    intent.putExtra(EditNoteActivity.EDIT_SECOND_TEXT_KEY, note.getText());
-                    intent.putExtra(EditNoteActivity.EDIT_TIME_KEY, note.getTime());
+                    intent.putExtra(ProviGenBaseContract._ID, note.getId());
                     cardView.getContext().startActivity(intent);
                 }
             });

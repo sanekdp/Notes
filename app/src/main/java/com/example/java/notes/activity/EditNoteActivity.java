@@ -1,10 +1,16 @@
 package com.example.java.notes.activity;
 
+import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Loader;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,27 +18,30 @@ import android.widget.EditText;
 
 import com.example.java.notes.R;
 import com.example.java.notes.db.NotesContract;
+import com.example.java.notes.model.Note;
+import com.example.java.notes.util.DateUtil;
+import com.tjeannin.provigen.ProviGenBaseContract;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EditNoteActivity extends AppCompatActivity {
+public class EditNoteActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private static final String SHARE_TYPE = "text/plain";
     public static final String RESULT =  "RESULT";
-    private static String TIME_NOTE;
+    private static final String SHARE_TYPE = "text/plain";
+
+    private long mId = -1;
+    private Boolean mIsNoteUpdatable = false;
+    private String mOriginalTitle = null;
+    private String mOriginalText = null;
 
     @BindView(R.id.titleEditText)
-    protected EditText mFirstEditText;
+    protected EditText mTitleEditText;
     @BindView(R.id.contentEditText)
-    protected EditText mSecondEditText;
+    protected EditText mContentEditText;
     @BindView(R.id.toolbar)
     protected Toolbar mToolbar = null;
-
-    public static final String EDIT_FIRST_TEXT_KEY = "EDIT_FIRST_TEXT_KEY";
-    public static final String EDIT_SECOND_TEXT_KEY = "EDIT_SECOND_TEXT_KEY";
-    public static final String EDIT_TIME_KEY = "EDIT_TIME_KEY";
 
     public static Intent newInstance(Context context) {
         return new Intent(context, EditNoteActivity.class);
@@ -43,39 +52,34 @@ public class EditNoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_note);
         ButterKnife.bind(this);
+        checkIntentByExtraId();
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Note");
-        TIME_NOTE = getIntent().getStringExtra(EDIT_TIME_KEY);
-        if (TIME_NOTE != null) {
-            String extraTitle = getIntent().getStringExtra(EDIT_FIRST_TEXT_KEY);
-            String extraText = getIntent().getStringExtra(EDIT_SECOND_TEXT_KEY);
-            mFirstEditText.setText(extraTitle);
-            mSecondEditText.setText(extraText);
-        }
+    }
+
+    private void checkIntentByExtraId() {
+        Intent intent = getIntent();
+        if(!intent.hasExtra(ProviGenBaseContract._ID)) return;
+        mId = intent.getLongExtra(ProviGenBaseContract._ID, mId);
+        if(mId == -1) return;
+        mIsNoteUpdatable = true;
+        getLoaderManager().initLoader(R.id.edit_note_loader, null, this);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home: {
-                //finish();
-                Intent intent = new Intent(this, NotesActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                safetyFinish(() -> finish());
                 break;
             }
             case R.id.action_share: {
-                share();
-                Intent intent = new Intent();
-                intent.putExtra(RESULT, "Отправлено");
-                setResult(RESULT_OK, intent);
-                finish();
+                share();;
                 break;
             }
             case R.id.action_delete:{
-                if (TIME_NOTE != null)
-                    deleteNote();
+                deleteNote();
                 Intent intent = new Intent();
                 intent.putExtra(RESULT, "Удалено");
                 setResult(RESULT_OK, intent);
@@ -97,45 +101,107 @@ public class EditNoteActivity extends AppCompatActivity {
     @Override
     public boolean onCreatePanelMenu(int featureId, Menu menu) {
         getMenuInflater().inflate(R.menu.note_menu, menu);
-        menu.findItem(R.id.action_share).setVisible(TIME_NOTE != null);
-        menu.findItem(R.id.action_delete).setVisible(TIME_NOTE != null);
+        menu.findItem(R.id.action_share).setVisible(mIsNoteUpdatable);
+        menu.findItem(R.id.action_delete).setVisible(mIsNoteUpdatable);
         return super.onCreatePanelMenu(featureId, menu);
     }
 
     private String prepareNoteForSharing() {
-        return getString(R.string.sharing_template, mFirstEditText.getText(), mSecondEditText.getText());
+        return getString(R.string.sharing_template, mTitleEditText.getText(), mContentEditText.getText());
     }
 
     @OnClick(R.id.saveBtn)
     public void onSaveBtnClick() {
-        if (TIME_NOTE == null)
-            insertNote();
-        else
-            updateNote();
+        save();
         finish();
     }
 
     private void insertNote() {
         ContentValues values = new ContentValues();
-        values.put(NotesContract.TITLE_COLUMN, mFirstEditText.getText().toString());
-        values.put(NotesContract.TEXT_COLUMN, mSecondEditText.getText().toString());
-        values.put(NotesContract.TIME_COLUMN, String.valueOf(System.currentTimeMillis()));
+        values.put(NotesContract.TITLE_COLUMN, mTitleEditText.getText().toString());
+        values.put(NotesContract.TEXT_COLUMN, mContentEditText.getText().toString());
+        values.put(NotesContract.TIME_COLUMN, DateUtil.formatCurrentDate());
         getContentResolver().insert(NotesContract.CONTENT_URI, values);
     }
 
     private void updateNote() {
         ContentValues values = new ContentValues();
-        values.put(NotesContract.TITLE_COLUMN, mFirstEditText.getText().toString());
-        values.put(NotesContract.TEXT_COLUMN, mSecondEditText.getText().toString());
-        values.put(NotesContract.TIME_COLUMN, TIME_NOTE);
-        String clause = "TIME = ?";
-        String[] args = { TIME_NOTE };
-        getContentResolver().update(NotesContract.CONTENT_URI,values, clause, args);
+        values.put(NotesContract.TITLE_COLUMN, mTitleEditText.getText().toString());
+        values.put(NotesContract.TEXT_COLUMN, mContentEditText.getText().toString());
+        values.put(NotesContract.TIME_COLUMN, DateUtil.formatCurrentDate());
+        getContentResolver().update(
+                Uri.withAppendedPath(NotesContract.CONTENT_URI, String.valueOf(mId)),
+                values,
+                null,
+                null);
     }
 
     private void deleteNote() {
-        String clause = "TIME = ?";
-        String[] args = { TIME_NOTE };
-        getContentResolver().delete(NotesContract.CONTENT_URI, clause, args);
+        getContentResolver().delete(
+                Uri.withAppendedPath(NotesContract.CONTENT_URI, String.valueOf(mId)),
+                null,
+                null);
+        finish();
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        return new CursorLoader(
+                this,
+                Uri.withAppendedPath(NotesContract.CONTENT_URI, String.valueOf(mId)),
+                null,
+                null,
+                null,
+                null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (cursor == null || !cursor.moveToFirst()) return;
+        Note note = new Note(cursor);
+        mTitleEditText.setText(note.getTitle());
+        mContentEditText.setText(note.getText());
+        mOriginalTitle = note.getTitle();
+        mOriginalText = note.getText();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        safetyFinish(() -> EditNoteActivity.super.onBackPressed());
+    }
+
+    private void safetyFinish(Runnable finish) {
+        if(mOriginalTitle.equals(mTitleEditText.getText().toString())
+                && mOriginalText.equals(mContentEditText.getText().toString())) {
+            finish.run();
+            return;
+        }
+        showDoYouSureAlert(finish);
+    }
+
+    private void showDoYouSureAlert(final Runnable finish) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.do_you_sure_alert_title);
+        builder.setMessage(R.string.do_yout_sure_alert_do_you_want_to_save_change);
+        builder.setCancelable(false);
+        builder.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
+            save();
+            finish.run();
+        });
+        builder.setNegativeButton(android.R.string.no, (dialogInterface, i) -> finish.run());
+        builder.show();
+    }
+
+    private void save() {
+        if(mIsNoteUpdatable) {
+            updateNote();
+        } else {
+            insertNote();
+        }
     }
 }
