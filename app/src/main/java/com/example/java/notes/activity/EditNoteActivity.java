@@ -66,7 +66,7 @@ public class EditNoteActivity extends AppCompatActivity {
                 break;
             }
             case R.id.action_share: {
-                //share();
+                share();
                 Intent intent = new Intent();
                 intent.putExtra(RESULT, "Отправлено");
                 setResult(RESULT_OK, intent);
@@ -97,8 +97,8 @@ public class EditNoteActivity extends AppCompatActivity {
     @Override
     public boolean onCreatePanelMenu(int featureId, Menu menu) {
         getMenuInflater().inflate(R.menu.note_menu, menu);
-        if (TIME_NOTE == null)
-            menu.findItem(R.id.action_delete).setVisible(false);
+        menu.findItem(R.id.action_share).setVisible(TIME_NOTE != null);
+        menu.findItem(R.id.action_delete).setVisible(TIME_NOTE != null);
         return super.onCreatePanelMenu(featureId, menu);
     }
 
@@ -134,7 +134,6 @@ public class EditNoteActivity extends AppCompatActivity {
     }
 
     private void deleteNote() {
-        ContentValues values = new ContentValues();
         String clause = "TIME = ?";
         String[] args = { TIME_NOTE };
         getContentResolver().delete(NotesContract.CONTENT_URI, clause, args);
