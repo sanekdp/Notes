@@ -9,6 +9,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,8 +34,8 @@ public class EditNoteActivity extends AppCompatActivity implements LoaderManager
 
     private long mId = -1;
     private Boolean mIsNoteUpdatable = false;
-    private String mOriginalTitle = null;
-    private String mOriginalText = null;
+    private String mOriginalTitle = "";
+    private String mOriginalText = "";
 
     @BindView(R.id.titleEditText)
     protected EditText mTitleEditText;
@@ -43,7 +44,16 @@ public class EditNoteActivity extends AppCompatActivity implements LoaderManager
     @BindView(R.id.toolbar)
     protected Toolbar mToolbar = null;
 
-    public static Intent newInstance(Context context) {
+
+    @NonNull
+    public static Intent newInstance(@NonNull Context context) {
+        return new Intent(context, EditNoteActivity.class);
+    }
+
+    @NonNull
+    public static Intent newInstance(@NonNull Context context, long id) {
+        Intent intent = newInstance(context);
+        intent.putExtra(ProviGenBaseContract._ID, id);
         return new Intent(context, EditNoteActivity.class);
     }
 
@@ -193,6 +203,7 @@ public class EditNoteActivity extends AppCompatActivity implements LoaderManager
             save();
             finish.run();
         });
+        builder.setNeutralButton(android.R.string.search_go, (dialogInterface, i) -> dialogInterface.dismiss());
         builder.setNegativeButton(android.R.string.no, (dialogInterface, i) -> finish.run());
         builder.show();
     }

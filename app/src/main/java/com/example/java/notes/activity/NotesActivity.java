@@ -12,13 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import com.example.java.notes.adapters.NotesAdapter;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.java.notes.R;
 import com.example.java.notes.adapters.NotesAdapter;
+import com.example.java.notes.adapters.NotesAdapter.NotesViewHolder;
 import com.example.java.notes.db.NotesContract;
 import com.example.java.notes.model.Note;
 
@@ -29,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class NotesActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class NotesActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
 
     private static final int REQUEST_CODE = 101;
     @BindView(R.id.recycler_notes)
@@ -119,10 +122,18 @@ public class NotesActivity extends AppCompatActivity implements LoaderManager.Lo
         NotesAdapter adapter = new NotesAdapter();
         recyclerView.setAdapter(adapter);
         adapter.setDataSource(dataSource);
+        adapter.setOnItemClickListener(this);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        NotesViewHolder holder = (NotesViewHolder) recyclerView.findContainingViewHolder(view);
+        if (holder == null) return;;
+        startActivity(EditNoteActivity.newInstance(this, holder.getNote().getId()));
     }
 }

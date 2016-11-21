@@ -27,6 +27,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         notifyDataSetChanged();
     }
 
+    private View.OnClickListener mOnItemClickListener = null;
+
+    public void setOnItemClickListener(View.OnClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
     @Override
     public NotesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -40,6 +45,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     public void onBindViewHolder(NotesViewHolder holder, int position) {
 
         Note note = mDataSource.get(position);
+        holder.itemView.setOnClickListener(mOnItemClickListener);
         holder.bindView(note);
     }
 
@@ -50,7 +56,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         return mDataSource.size();
     }
 
-    static class NotesViewHolder extends RecyclerView.ViewHolder {
+    public static class NotesViewHolder extends RecyclerView.ViewHolder {
+
+        private Note mNote = null;
+
+        public Note getNote() {
+            return mNote;
+        }
 
         @BindView(R.id.title_text_view)
         protected TextView mPrimaryTextView = null;
@@ -61,21 +73,18 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         @BindView(R.id.card_view)
         protected CardView cardView = null;
 
+
+
         public NotesViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
         void bindView(final Note note) {
+            mNote = note;
             mPrimaryTextView.setText(note.getTitle());
             mSecondaryTextView.setText(note.getText());
             mDateTextView.setText(note.getTime());
-            cardView.setOnClickListener(view -> {
-                Intent intent = EditNoteActivity.newInstance(cardView.getContext());
-                intent.putExtra(ProviGenBaseContract._ID, note.getId());
-                cardView.getContext().startActivity(intent);
-            });
-
         }
     }
 
