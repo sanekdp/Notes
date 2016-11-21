@@ -52,8 +52,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     static class NotesViewHolder extends RecyclerView.ViewHolder {
 
-        private Note mNote = null;
-
         @BindView(R.id.title_text_view)
         protected TextView mPrimaryTextView = null;
         @BindView(R.id.secondary_text_view)
@@ -72,13 +70,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             mPrimaryTextView.setText(note.getTitle());
             mSecondaryTextView.setText(note.getText());
             mDateTextView.setText(note.getTime());
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = EditNoteActivity.newInstance(cardView.getContext());
-                    intent.putExtra(ProviGenBaseContract._ID, note.getId());
-                    cardView.getContext().startActivity(intent);
-                }
+            cardView.setOnClickListener(view -> {
+                Intent intent = EditNoteActivity.newInstance(cardView.getContext());
+                intent.putExtra(ProviGenBaseContract._ID, note.getId());
+                cardView.getContext().startActivity(intent);
             });
 
         }

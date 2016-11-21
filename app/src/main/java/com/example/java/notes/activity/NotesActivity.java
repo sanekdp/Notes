@@ -113,7 +113,6 @@ public class NotesActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         List<Note> dataSource = new ArrayList<>();
-//        data.moveToFirst();
         while (data.moveToNext()) {
             dataSource.add(new Note(data));
         }

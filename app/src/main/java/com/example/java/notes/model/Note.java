@@ -25,24 +25,12 @@ public class Note {
         return mTitle;
     }
 
-    public void setTitle(String mTitle) {
-        this.mTitle = mTitle;
-    }
-
     public String getText() {
         return mText;
     }
 
-    public void setText(String mText) {
-        this.mText = mText;
-    }
-
     public String getTime() {
         return mTime;
-    }
-
-    public void setTime(String mTime) {
-        this.mTime = mTime;
     }
 
     public long getId() {
