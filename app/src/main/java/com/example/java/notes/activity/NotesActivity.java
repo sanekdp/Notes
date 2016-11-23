@@ -1,5 +1,6 @@
 package com.example.java.notes.activity;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -74,6 +75,15 @@ public class NotesActivity extends AppCompatActivity implements LoaderManager.Lo
                 RecyclerView.VERTICAL,
                 false);
         recyclerView.setLayoutManager(layoutManager);
+        getSupportLoaderManager().initLoader(R.id.notes_loader, null, this);
+
+        for (int i = 0; i < 10; i++ )
+        {
+            ContentValues values = new ContentValues();
+            values.put(NotesContract.TEXT_COLUMN, "jfgdkfjg" + i);
+            getContentResolver().insert(NotesContract.CONTENT_URI, values);
+        }
+
     }
 
     @Override
@@ -111,12 +121,6 @@ public class NotesActivity extends AppCompatActivity implements LoaderManager.Lo
                 null,
                 null,
                 null);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getSupportLoaderManager().initLoader(R.id.notes_loader, null, this);
     }
 
     @Override

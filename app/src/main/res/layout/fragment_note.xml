@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.TextInputLayout
+        android:theme="@style/PrimaryColorAccentStyle"
+        android:layout_margin="@dimen/edit_note_field_margin"
+        android:id="@+id/titleEditTextWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/titleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/title_hint"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:theme="@style/PrimaryColorAccentStyle"
+        android:id="@+id/contentEditTextWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleEditTextWrapper"
+        android:layout_alignLeft="@+id/titleEditTextWrapper"
+        android:layout_alignStart="@+id/titleEditTextWrapper">
+
+        <EditText
+            android:text="\n\n\n\n\n\n\n\n\n\n\n\n"
+            android:gravity="top|start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:id="@+id/contentEditText"
+            android:hint="@string/text_hint" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:layout_alignParentBottom="true"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:id="@+id/saveBtn"
+        android:text="@string/save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/PrimaryColorBackButtonTheme"/>
+
+</RelativeLayout>
