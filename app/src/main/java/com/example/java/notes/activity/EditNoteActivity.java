@@ -54,7 +54,7 @@ public class EditNoteActivity extends AppCompatActivity implements LoaderManager
     public static Intent newInstance(@NonNull Context context, long id) {
         Intent intent = newInstance(context);
         intent.putExtra(ProviGenBaseContract._ID, id);
-        return new Intent(context, EditNoteActivity.class);
+        return intent;
     }
 
     @Override

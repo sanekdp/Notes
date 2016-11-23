@@ -1,7 +1,5 @@
 package com.example.java.notes.adapters;
 
-import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.java.notes.R;
-import com.example.java.notes.activity.EditNoteActivity;
 import com.example.java.notes.model.Note;
-import com.tjeannin.provigen.ProviGenBaseContract;
 
 import java.util.List;
 
@@ -29,9 +25,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     private View.OnClickListener mOnItemClickListener = null;
 
+    private View.OnLongClickListener mOnLongItemClickListener = null;
+
     public void setOnItemClickListener(View.OnClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
+
+    public void setmOnLongItemClickListener(View.OnLongClickListener mOnLongItemClickListener) {
+        this.mOnLongItemClickListener = mOnLongItemClickListener;
+    }
+
     @Override
     public NotesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -45,15 +48,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     public void onBindViewHolder(NotesViewHolder holder, int position) {
 
         Note note = mDataSource.get(position);
-        holder.itemView.setOnClickListener(mOnItemClickListener);
         holder.bindView(note);
+        holder.itemView.setOnClickListener(mOnItemClickListener);
+        holder.itemView.setOnLongClickListener(mOnLongItemClickListener);
     }
 
     @Override
     public int getItemCount() {
-        if (mDataSource == null)
-            return 0;
-        return mDataSource.size();
+        return (mDataSource == null) ? 0 : mDataSource.size();
     }
 
     public static class NotesViewHolder extends RecyclerView.ViewHolder {
@@ -70,8 +72,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         protected TextView mSecondaryTextView = null;
         @BindView(R.id.date_text_view)
         protected TextView mDateTextView = null;
-        @BindView(R.id.card_view)
-        protected CardView cardView = null;
 
 
 
