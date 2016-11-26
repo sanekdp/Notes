@@ -88,6 +88,10 @@ public class AddNoteActivity extends AppCompatActivity{
     }
 
     private void safetyFinish(Runnable runnable) {
+        if(mTitleEditText.getText().toString().isEmpty() && mContentEditText.getText().toString().isEmpty()) {
+            runnable.run();
+            return;
+        }
         showDoYouSureAlert(runnable);
     }
 
