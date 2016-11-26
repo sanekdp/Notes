@@ -12,4 +12,5 @@
     <string name="do_yout_sure_alert_do_you_want_to_save_change">Сохранить изменения?</string>
     <string name="note_display">Просмотр</string>
     <string name="note_edit">Редактирование заметки</string>
+    <string name="note_create">Новая заметка</string>
 </resources>

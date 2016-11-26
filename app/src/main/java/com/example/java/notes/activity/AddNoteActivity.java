@@ -49,7 +49,7 @@ public class AddNoteActivity extends AppCompatActivity{
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("New Note");
+        setTitle(R.string.note_create);
     }
 
     @Override
