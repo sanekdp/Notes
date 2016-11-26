@@ -2,11 +2,11 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="view_notes_item_padding">15dp</dimen>
     <dimen name="view_notes_item_corner_radius">5dp</dimen>
-    <dimen name="view_notes_item_primary_text_size">16sp</dimen>
+    <dimen name="view_notes_item_title_text_size">16sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="card_view_content_padding">5dp</dimen>
     <dimen name="view_notes_item_heght">72dp</dimen>
-    <dimen name="view_notes_item_secondary_text_size">13sp</dimen>
+    <dimen name="view_notes_item_content_text_size">13sp</dimen>
     <dimen name="activity_padding">16dp</dimen>
     <dimen name="edit_note_field_margin">8dp</dimen>
 </resources>

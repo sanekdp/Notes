@@ -27,11 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EditNoteActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
-
-    private long mId = -1;
-    private String mOriginalTitle = "";
-    private String mOriginalText = "";
+public class AddNoteActivity extends AppCompatActivity{
 
     @BindView(R.id.title_note_text)
     protected EditText mTitleEditText;
@@ -43,33 +39,17 @@ public class EditNoteActivity extends AppCompatActivity implements LoaderManager
 
     @NonNull
     public static Intent newInstance(@NonNull Context context) {
-        return new Intent(context, EditNoteActivity.class);
-    }
-
-    @NonNull
-    public static Intent newInstance(@NonNull Context context, long id) {
-        Intent intent = newInstance(context);
-        intent.putExtra(ProviGenBaseContract._ID, id);
-        return intent;
+        return new Intent(context, AddNoteActivity.class);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_note);
+        setContentView(R.layout.activity_add_note);
         ButterKnife.bind(this);
-        checkIntentByExtraId();
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(R.string.note_edit);
-    }
-
-    private void checkIntentByExtraId() {
-        Intent intent = getIntent();
-        if(!intent.hasExtra(ProviGenBaseContract._ID)) finish();
-        mId = intent.getLongExtra(ProviGenBaseContract._ID, mId);
-        if(mId == -1) finish();
-        getLoaderManager().initLoader(R.id.edit_note_loader, null, this);
+        setTitle("New Note");
     }
 
     @Override
@@ -86,76 +66,42 @@ public class EditNoteActivity extends AppCompatActivity implements LoaderManager
     @OnClick(R.id.saveBtn)
     public void onSaveBtnClick() {
         save();
+        setResult(RESULT_OK);
         finish();
     }
 
     private void save() {
-        updateNote();
+        insertNote();
     }
 
-    private void updateNote() {
+    private void insertNote() {
         ContentValues values = new ContentValues();
         values.put(NotesContract.TITLE_COLUMN, mTitleEditText.getText().toString());
         values.put(NotesContract.TEXT_COLUMN, mContentEditText.getText().toString());
         values.put(NotesContract.TIME_COLUMN, DateUtil.formatCurrentDate());
-        getContentResolver().update(
-                Uri.withAppendedPath(NotesContract.CONTENT_URI, String.valueOf(mId)),
-                values,
-                null,
-                null);
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(
-                this,
-                Uri.withAppendedPath(NotesContract.CONTENT_URI, String.valueOf(mId)),
-                null,
-                null,
-                null,
-                null);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (cursor == null || !cursor.moveToFirst()) return;
-        Note note = new Note(cursor);
-        mTitleEditText.setText(note.getTitle());
-        mContentEditText.setText(note.getText());
-        mOriginalTitle = note.getTitle();
-        mOriginalText = note.getText();
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
+        getContentResolver().insert(NotesContract.CONTENT_URI, values);
     }
 
     @Override
     public void onBackPressed() {
-        safetyFinish(() -> EditNoteActivity.super.onBackPressed());
+        safetyFinish(() -> AddNoteActivity.super.onBackPressed());
     }
 
-    private void safetyFinish(Runnable finish) {
-        if(mOriginalTitle.equals(mTitleEditText.getText().toString())
-                && mOriginalText.equals(mContentEditText.getText().toString())) {
-            finish.run();
-            return;
-        }
-        showDoYouSureAlert(finish);
+    private void safetyFinish(Runnable runnable) {
+        showDoYouSureAlert(runnable);
     }
 
-    private void showDoYouSureAlert(final Runnable finish) {
+    private void showDoYouSureAlert(final Runnable runnable) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.do_you_sure_alert_title);
         builder.setMessage(R.string.do_yout_sure_alert_do_you_want_to_save_change);
         builder.setCancelable(false);
         builder.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
             save();
-            finish.run();
+            runnable.run();
         });
         builder.setNeutralButton(android.R.string.search_go, (dialogInterface, i) -> dialogInterface.dismiss());
-        builder.setNegativeButton(android.R.string.no, (dialogInterface, i) -> finish.run());
+        builder.setNegativeButton(android.R.string.no, (dialogInterface, i) -> runnable.run());
         builder.show();
     }
 }

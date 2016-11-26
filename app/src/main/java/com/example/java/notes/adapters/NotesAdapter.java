@@ -17,15 +17,13 @@ import butterknife.ButterKnife;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
     private List<Note> mDataSource = null;
+    private View.OnClickListener mOnItemClickListener = null;
+    private View.OnLongClickListener mOnLongItemClickListener = null;
 
     public void setDataSource(List<Note> dataSource) {
         this.mDataSource = dataSource;
         notifyDataSetChanged();
     }
-
-    private View.OnClickListener mOnItemClickListener = null;
-
-    private View.OnLongClickListener mOnLongItemClickListener = null;
 
     public void setOnItemClickListener(View.OnClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
@@ -66,9 +64,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             return mNote;
         }
 
-        @BindView(R.id.title_text_view)
+        @BindView(R.id.title_note_view)
         protected TextView mPrimaryTextView = null;
-        @BindView(R.id.secondary_text_view)
+        @BindView(R.id.content_note_view)
         protected TextView mSecondaryTextView = null;
         @BindView(R.id.date_text_view)
         protected TextView mDateTextView = null;
@@ -87,5 +85,4 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             mDateTextView.setText(note.getTime());
         }
     }
-
 }

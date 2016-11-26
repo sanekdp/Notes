@@ -1,6 +1,5 @@
 package com.example.java.notes.activity;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -36,7 +35,13 @@ import butterknife.OnClick;
 
 public class NotesActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener, View.OnLongClickListener {
 
-    private static final int REQUEST_CODE = 101;
+    private static final int REQUEST_CODE_ADD = 101;
+
+    public static final String RESULT_DEFAULT = "Результат не известен";
+    public static final String RESULT_DELETE_KEY = "RESULT_KEY";
+    public static final String RESULT_DELETE = "Удалено";
+    public static final String ADDED = "Добавлено";
+
     @BindView(R.id.recycler_notes)
     protected RecyclerView recyclerView = null;
     @BindView(R.id.toolbar)
@@ -47,20 +52,20 @@ public class NotesActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @OnClick(R.id.floating_btn)
     void onClick() {
-        startActivityForResult(EditNoteActivity.newInstance(this), REQUEST_CODE);
+        startActivityForResult(AddNoteActivity.newInstance(this), REQUEST_CODE_ADD);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
-
-            if (requestCode == REQUEST_CODE) {
-                String result = data.getStringExtra(EditNoteActivity.RESULT);
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-            }
-        }
+        String result = RESULT_DEFAULT;
+        if (resultCode == RESULT_OK)
+            if (requestCode == REQUEST_CODE_ADD )
+                result = ADDED;
+            else if (data.hasExtra(RESULT_DELETE_KEY))
+                    result = RESULT_DELETE;
+        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -76,14 +81,6 @@ public class NotesActivity extends AppCompatActivity implements LoaderManager.Lo
                 false);
         recyclerView.setLayoutManager(layoutManager);
         getSupportLoaderManager().initLoader(R.id.notes_loader, null, this);
-
-        for (int i = 0; i < 10; i++ )
-        {
-            ContentValues values = new ContentValues();
-            values.put(NotesContract.TEXT_COLUMN, "jfgdkfjg" + i);
-            getContentResolver().insert(NotesContract.CONTENT_URI, values);
-        }
-
     }
 
     @Override
@@ -149,7 +146,7 @@ public class NotesActivity extends AppCompatActivity implements LoaderManager.Lo
     public void onClick(View view) {
         NotesViewHolder holder = (NotesViewHolder) recyclerView.findContainingViewHolder(view);
         if (holder == null) return;;
-        startActivity(EditNoteActivity.newInstance(this, holder.getNote().getId()));
+        startActivity(DisplayNoteActivity.newInstance(this, holder.getNote().getId()));
     }
 
 

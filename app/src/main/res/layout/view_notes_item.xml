@@ -11,12 +11,12 @@
     android:layout_height="@dimen/view_notes_item_heght">
     <TextView
         style="@style/PrimaryTextView"
-        android:id="@+id/title_text_view"/>
+        android:id="@+id/title_note_view"/>
 
     <TextView
         android:layout_gravity="bottom"
         style="@style/SecondaryTextView"
-        android:id="@+id/secondary_text_view" />
+        android:id="@+id/content_note_view" />
 
     <TextView
         android:id="@+id/date_text_view"

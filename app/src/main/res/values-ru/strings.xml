@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Заметки</string>
+    <string name="settings">Настройки</string>
+    <string name="edit_name">Изменить заметку</string>
+    <string name="help">Помощь</string>
+    <string name="sharing_template" formatted="false">Название: %s\nСодержание: %s</string>
+    <string name="save">Сохранить</string>
+    <string name="text_hint">Текст...</string>
+    <string name="title_hint">Название...</string>
+    <string name="do_you_sure_alert_title">Внимание!!!</string>
+    <string name="do_yout_sure_alert_do_you_want_to_save_change">Сохранить изменения?</string>
+    <string name="note_display">Просмотр</string>
+    <string name="note_edit">Редактирование заметки</string>
+</resources>

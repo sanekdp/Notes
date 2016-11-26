@@ -15,7 +15,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.AddNoteActivity">
+        </activity>
         <activity android:name=".activity.EditNoteActivity">
+        </activity>
+        <activity android:name=".activity.DisplayNoteActivity">
         </activity>
         <provider
             android:authorities="com.example.java.notes"

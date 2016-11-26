@@ -20,12 +20,12 @@
     </style>
 
     <style name="PrimaryTextView" parent="DefaultTextView">
-        <item name="android:textSize">@dimen/view_notes_item_primary_text_size</item>
+        <item name="android:textSize">@dimen/view_notes_item_title_text_size</item>
         <item name="android:textColor">@android:color/primary_text_light</item>
     </style>
 
     <style name="SecondaryTextView" parent="DefaultTextView">
-        <item name="android:textSize">@dimen/view_notes_item_secondary_text_size</item>
+        <item name="android:textSize">@dimen/view_notes_item_content_text_size</item>
         <item name="android:textColor">@android:color/secondary_text_light</item>
     </style>
 

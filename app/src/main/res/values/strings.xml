@@ -9,4 +9,6 @@
     <string name="title_hint">Title...</string>
     <string name="do_you_sure_alert_title">Attention!!!</string>
     <string name="do_yout_sure_alert_do_you_want_to_save_change">Do you want to save change?</string>
+    <string name="note_display">Display</string>
+    <string name="note_edit">Edit Note</string>
 </resources>

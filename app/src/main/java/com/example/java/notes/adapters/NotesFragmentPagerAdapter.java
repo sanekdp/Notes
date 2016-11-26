@@ -14,6 +14,8 @@ public class NotesFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private List<Note> mDataSource = null;
 
+    private long mFirstNoteId = -1;
+
     public NotesFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -32,5 +34,9 @@ public class NotesFragmentPagerAdapter extends FragmentPagerAdapter {
     public void setDataSource(List<Note> dataSource) {
         mDataSource = dataSource;
         notifyDataSetChanged();
+    }
+
+    public void setFirstNoteId(long mFirstNoteId) {
+        this.mFirstNoteId = mFirstNoteId;
     }
 }
