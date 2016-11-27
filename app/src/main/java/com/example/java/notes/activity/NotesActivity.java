@@ -126,8 +126,7 @@ public class NotesActivity extends AppCompatActivity implements LoaderManager.Lo
         if (data != null && data.moveToFirst()) {
             do {
                 dataSource.add(new Note(data));
-            }
-            while (data.moveToNext());
+            } while (data.moveToNext());
         }
         NotesAdapter adapter = new NotesAdapter();
         recyclerView.setAdapter(adapter);

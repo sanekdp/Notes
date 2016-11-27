@@ -6,37 +6,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.TextInputLayout
-        android:theme="@style/PrimaryTextView"
-        android:layout_margin="@dimen/edit_note_field_margin"
-        android:id="@+id/titleDisplayTextWrapper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
 
         <TextView
             tools:text="Заглавие заметки"
+            android:theme="@style/PrimaryTextView"
             android:id="@+id/title_note_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-
-        android:id="@+id/contentDispalyTextWrapper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleDisplayTextWrapper"
-        android:layout_alignLeft="@+id/titleDisplayTextWrapper"
-        android:layout_alignStart="@+id/titleDisplayTextWrapper">
 
         <TextView
             tools:text="test\ntest\ntest\ntest\ntest\n\n\n\n\n\"
             android:gravity="top|start"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/content_note_text"/>
-
-    </android.support.design.widget.TextInputLayout>
+            android:id="@+id/content_note_text"
+            android:layout_below="@+id/title_note_text"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
 </RelativeLayout>

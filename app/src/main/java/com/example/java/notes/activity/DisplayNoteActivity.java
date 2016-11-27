@@ -95,8 +95,7 @@ public class DisplayNoteActivity extends AppCompatActivity implements LoaderMana
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 dataSource.add(new Note(cursor));
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         mViewPagerAdapter.setDataSource(dataSource);
         if (cursor != null && cursor.moveToFirst()) {
