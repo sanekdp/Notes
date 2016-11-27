@@ -123,13 +123,12 @@ public class NotesActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         List<Note> dataSource = new ArrayList<>();
-        if (data.getCount() == 0) return;
-        data.moveToFirst();
-        do
-        {
-            dataSource.add(new Note(data));
+        if (data != null && data.moveToFirst()) {
+            do {
+                dataSource.add(new Note(data));
+            }
+            while (data.moveToNext());
         }
-        while (data.moveToNext());
         NotesAdapter adapter = new NotesAdapter();
         recyclerView.setAdapter(adapter);
         adapter.setDataSource(dataSource);

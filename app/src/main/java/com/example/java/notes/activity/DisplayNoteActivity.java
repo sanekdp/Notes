@@ -91,24 +91,23 @@ public class DisplayNoteActivity extends AppCompatActivity implements LoaderMana
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (cursor == null || !cursor.moveToFirst()) return;
         List<Note> dataSource = new ArrayList<>();
-
-        cursor.moveToFirst();
-        do
-        {
-            dataSource.add(new Note(cursor));
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                dataSource.add(new Note(cursor));
+            }
+            while (cursor.moveToNext());
         }
-        while (cursor.moveToNext());
         mViewPagerAdapter.setDataSource(dataSource);
-        int numStartItem = -1;
-        for (Note note: dataSource){
-            numStartItem++;
-            if (note.getId() == mCurrentNoteId)
-                break;
+        if (cursor != null && cursor.moveToFirst()) {
+            int numStartItem = -1;
+            for (Note note : dataSource) {
+                numStartItem++;
+                if (note.getId() == mCurrentNoteId)
+                    break;
+            }
+            mViewPager.setCurrentItem(numStartItem);
         }
-        mViewPager.setCurrentItem(numStartItem);
-        mViewPagerAdapter.setFirstNoteId(mCurrentNoteId);
     }
 
     @Override

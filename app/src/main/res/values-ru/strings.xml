@@ -4,7 +4,7 @@
     <string name="settings">Настройки</string>
     <string name="edit_name">Изменить заметку</string>
     <string name="help">Помощь</string>
-    <string name="sharing_template" formatted="false">Название: %s\nСодержание: %s</string>
+    <string name="sharing_template" formatted="false">Название: %s\nСодержание: %s\nЗацени\nhttps://github.com/sanekdp/Notes/</string>
     <string name="save">Сохранить</string>
     <string name="text_hint">Текст...</string>
     <string name="title_hint">Название...</string>
