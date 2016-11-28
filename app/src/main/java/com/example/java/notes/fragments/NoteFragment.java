@@ -66,8 +66,6 @@ public class NoteFragment extends Fragment implements LoaderManager.LoaderCallba
         getActivity()
                 .getSupportLoaderManager()
                 .initLoader((int)getArguments().getLong(ProviGenBaseContract._ID), null, this);
-
-
     }
 
     @Override

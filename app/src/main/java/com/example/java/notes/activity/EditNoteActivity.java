@@ -4,6 +4,7 @@ import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -76,7 +77,7 @@ public class EditNoteActivity extends AppCompatActivity implements LoaderManager
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home: {
-                safetyFinish(() -> finish());
+                safetyFinish(() -> EditNoteActivity.this.finish());
                 break;
             }
         }
@@ -151,7 +152,7 @@ public class EditNoteActivity extends AppCompatActivity implements LoaderManager
         builder.setMessage(R.string.do_yout_sure_alert_do_you_want_to_save_change);
         builder.setCancelable(false);
         builder.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
-            save();
+            EditNoteActivity.this.save();
             finish.run();
         });
         builder.setNeutralButton(android.R.string.search_go, (dialogInterface, i) -> dialogInterface.dismiss());

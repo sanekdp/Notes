@@ -45,7 +45,7 @@ dependencies {
     compile "com.android.support:design:${supportVersion}"
     compile "com.jakewharton:butterknife:${butterKnifiVersion}"
     apt "com.jakewharton:butterknife-compiler:${butterKnifiVersion}"
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     compile 'com.github.provigen:ProviGen-lib:2.0.1'
 }
 tasks.whenTaskAdded { task ->
